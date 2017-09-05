@@ -24,6 +24,7 @@ import android.support.v4.media.session.MediaControllerCompat;
 
 import com.example.android.uamp.MusicService;
 import com.example.android.uamp.R;
+import com.example.android.uamp.ui.BaseActivity;
 import com.example.android.uamp.utils.LogHelper;
 
 public class TvVerticalGridActivity extends FragmentActivity
@@ -47,7 +48,7 @@ public class TvVerticalGridActivity extends FragmentActivity
         getWindow().setBackgroundDrawableResource(R.drawable.bg);
 
         mMediaBrowser = new MediaBrowserCompat(this,
-                new ComponentName(this, MusicService.class),
+                BaseActivity.SPOTIFY_BROWSER_COMPONENT,
                 mConnectionCallback, null);
     }
 

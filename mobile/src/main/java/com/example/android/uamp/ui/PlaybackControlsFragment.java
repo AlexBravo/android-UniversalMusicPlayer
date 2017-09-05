@@ -18,10 +18,12 @@ package com.example.android.uamp.ui;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
@@ -95,8 +97,18 @@ public class PlaybackControlsFragment extends Fragment {
                         .getSupportMediaController();
                 MediaMetadataCompat metadata = controller.getMetadata();
                 if (metadata != null) {
+                    MediaDescriptionCompat description = metadata.getDescription();
+                    MediaDescriptionCompat partialDescription = new MediaDescriptionCompat.Builder()
+                    .setMediaId(description.getMediaId())
+                    .setTitle(description.getTitle())
+                    .setSubtitle(description.getSubtitle())
+                    .setDescription(description.getDescription())
+                    //.setIconUri(description.getIconUri())
+                    //.setMediaUri(description.getMediaUri());
+                    .build();
+
                     intent.putExtra(MusicPlayerActivity.EXTRA_CURRENT_MEDIA_DESCRIPTION,
-                        metadata.getDescription());
+                            partialDescription);
                 }
                 startActivity(intent);
             }
@@ -262,9 +274,16 @@ public class PlaybackControlsFragment extends Fragment {
         MediaControllerCompat controller = ((FragmentActivity) getActivity())
                 .getSupportMediaController();
         if (controller != null) {
-            controller.getTransportControls().play();
+            MediaControllerCompat.TransportControls transportControls = controller.getTransportControls();
+            transportControls.play();
+            //transportControls.playFromUri(Uri.parse(TEST_3_URI), null);
+            LogHelper.e(TAG, "playFromUri");
         }
     }
+
+    private static final String TEST_1_URI = "spotify:track:6KywfgRqvgvfJc3JRwaZdZ";
+    private static final String TEST_2_URI = "spotify:nl:eyJ0eXBlIjoiUExBWSIsImRldmljZUlkIjoiODNiODUzMWRhZDg4NDNjYjIyNzkyMTd lYWNlOTJjNmIzYzQyOGRmMyIsImNvbnRleHQiOnsidXJpIjoic3BvdGlmeTp1c2VyOnNwb3RpZnk6cG xheWxpc3Q6MzdpOWRRWkYxRFdUUWxsTFJNZ1k5UyIsInVybCI6ImNvbnRleHQ6Ly9zcG90aWZ5OnVzZ XI6c3BvdGlmeTpwbGF5bGlzdDozN2k5ZFFaRjFEV1RRbGxMUk1nWTlTIiwicmVzdHJpY3Rpb25zIjp7 fX0sInBsYXlPcHRpb25zIjp7InBsYXliYWNrX2lkIjoiZWNkOWM2NDY0MTBlNGIyMjllN2YzNWM4NGQ yNTM4YzEiLCJpbml0aWFsbHlfcGF1c2VkIjpmYWxzZSwic3lzdGVtX2luaXRpYXRlZCI6ZmFsc2UsIn BsYXllcl9vcHRpb25zX292ZXJyaWRlIjp7fX0sInBsYXlPcmlnaW4iOnsiZmVhdHVyZV9pZGVudGlma WVyIjoidm9pY2VpbnB1dCJ9fQ==";
+    private static final String TEST_3_URI = "spotify:artist:0000BlyH0BpSivfg8y7QSb";
 
     private void pauseMedia() {
         MediaControllerCompat controller = ((FragmentActivity) getActivity())

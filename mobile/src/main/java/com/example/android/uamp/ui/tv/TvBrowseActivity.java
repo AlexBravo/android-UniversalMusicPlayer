@@ -26,6 +26,7 @@ import android.support.v4.media.session.MediaControllerCompat;
 
 import com.example.android.uamp.MusicService;
 import com.example.android.uamp.R;
+import com.example.android.uamp.ui.BaseActivity;
 import com.example.android.uamp.utils.LogHelper;
 
 /**
@@ -51,7 +52,7 @@ public class TvBrowseActivity extends FragmentActivity
         setContentView(R.layout.tv_activity_player);
 
         mMediaBrowser = new MediaBrowserCompat(this,
-                new ComponentName(this, MusicService.class),
+                BaseActivity.SPOTIFY_BROWSER_COMPONENT,
                 mConnectionCallback, null);
     }
 

@@ -183,7 +183,7 @@ public class FullScreenPlayerActivity extends ActionBarCastActivity {
                             scheduleSeekbarUpdate();
                             break;
                         default:
-                            LogHelper.d(TAG, "onClick with state ", state.getState());
+                            LogHelper.d(TAG, "onClick with state ", state);
                     }
                 }
             }
@@ -213,16 +213,16 @@ public class FullScreenPlayerActivity extends ActionBarCastActivity {
         }
 
         mMediaBrowser = new MediaBrowserCompat(this,
-            new ComponentName(this, MusicService.class), mConnectionCallback, null);
+                BaseActivity.SPOTIFY_BROWSER_COMPONENT, mConnectionCallback, null);
     }
 
     private void connectToSession(MediaSessionCompat.Token token) throws RemoteException {
         MediaControllerCompat mediaController = new MediaControllerCompat(
                 FullScreenPlayerActivity.this, token);
-        if (mediaController.getMetadata() == null) {
-            finish();
-            return;
-        }
+        //if (mediaController.getMetadata() == null) {
+        //    finish();
+        //    return;
+        //}
         setSupportMediaController(mediaController);
         mediaController.registerCallback(mCallback);
         PlaybackStateCompat state = mediaController.getPlaybackState();
@@ -356,6 +356,8 @@ public class FullScreenPlayerActivity extends ActionBarCastActivity {
                         .getString(R.string.casting_to_device, castName);
             mLine3.setText(line3Text);
         }
+
+        mControllers.setVisibility(VISIBLE);
 
         switch (state.getState()) {
             case PlaybackStateCompat.STATE_PLAYING:

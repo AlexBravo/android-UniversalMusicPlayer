@@ -64,9 +64,15 @@ public abstract class BaseActivity extends ActionBarCastActivity implements Medi
 
         // Connect a media browser just to get the media session token. There are other ways
         // this can be done, for example by sharing the session token directly.
+        //mMediaBrowser = new MediaBrowserCompat(this,
+        //    new ComponentName(this, MusicService.class), mConnectionCallback, null);
         mMediaBrowser = new MediaBrowserCompat(this,
-            new ComponentName(this, MusicService.class), mConnectionCallback, null);
+                SPOTIFY_BROWSER_COMPONENT, mConnectionCallback, null);
     }
+
+    public static final ComponentName SPOTIFY_BROWSER_COMPONENT =
+            new ComponentName("com.spotify.music",
+                    "com.spotify.mobile.android.spotlets.androidauto.SpotifyMediaBrowserService");
 
     @Override
     protected void onStart() {
